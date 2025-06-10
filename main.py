@@ -5,7 +5,6 @@ from sequence import *
 from lcsfinder import *
 from sequencealignment import *
 
-
 ### readFile
 
 def readFile(file):
@@ -34,9 +33,9 @@ def main():
         print("Error: Input file not provided or non existent\nUsage: python .\\projeto_1 data\\<INPUT_FILE_PATH>")
         return -1
     
-    for seq in sequences:
-        print(seq) 
-        print(seq.id) 
+    finder = LCSFinder(sequences)
+    aligned_seq = finder.compute_lcs()
+    print("The largest found sequence was: {0}".format(aligned_seq))
 
 # Redirects to main
 if __name__ == "__main__":

@@ -7,4 +7,8 @@ se virem esta mensagem tamos gg
 
 ## sequences.py 
 
-# How to run this project
+# Usage
+Para correr este projeto, correr o seguinte comando na pasta dos ficheiros python:
+```powershell
+python .\main.py .\data\seq.txt
+```
