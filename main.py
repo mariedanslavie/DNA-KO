@@ -13,6 +13,7 @@ def readFile(file):
     :param file: path to input file with all sequences
     :return: list of sequence objects
     """
+
     sequences = []
     i = 0
     with open(file, 'r') as f:

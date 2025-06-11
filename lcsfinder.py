@@ -1,7 +1,7 @@
 from sequencealignment import *
 import pprint
-import numpy as np
-import itertools
+### tirei o numpy e o itertools (confirma se era mesmo só preciso para o codigo de n sequencias)
+
 
 class LCSFinder:
     sequences = []
@@ -23,6 +23,7 @@ class LCSFinder:
         elif seqs_num > 3:
             self.aligned_seq = self.compute_lcs_n(self.sequences)
 
+#### Se as sequencias entrarem num destes if, a flag fica true
         flag = True
         return SequenceAlignment(self.sequences, [self.aligned_seq], 0) 
     
@@ -42,6 +43,8 @@ class LCSFinder:
         n = sequences[0].length()
         m = sequences[1].length()
 
+#### primeiro (0) é o que se vai meter, o j anda no range de 0 até m e é as posições na matriz -- COLUNAS
+#### primeiro (0) é o que se vai meter, o i anda no range de 0 até n e é as posições na matriz -- LINHAS
         matrix = [[0 for j in range(m+1)] for i in range(n+1)]
         
         # Preencher matriz
@@ -54,12 +57,15 @@ class LCSFinder:
         
         # Imprime matrix preenchida
         print("LCS Filled Matrix:")
+
+### Matriz bonitinha printed out
         for l in matrix:
             print(l)
         print("")
         
         # Descobrir maior sequencia com base na matriz
         aligned_seq = self.recursive_finder_2(matrix,(n+1)-1,(m+1)-1,aligned_seq)
+### Demos nome ao resultado do recursive finder, e invertemos a sequencia, pq estava ao contrário
 
         return aligned_seq[::-1]
 
@@ -123,34 +129,3 @@ class LCSFinder:
             else: 
                 return self.recursive_finder_3(matrix,i,j,k-1,aligned_seq) 
     #<---------- Caso de num_seq == 3
-
-    def compute_lcs_n(self,sequences):
-        aligned_seq = ""
-
-        # Obter lista com dimensão de cada sequência: ex: [3,4,3,3]
-        seq_lengths = [seq.length() for seq in sequences]
-        # Lista de ranges para cada dimensão: [range(0, 3), range(0, 4), range(0, 3), range(0, 3)]
-        iterables = [range(1,length) for length in seq_lengths]
-        # Matriz com todas as combinações de iterações possiveis para todas as sequências
-        product = list(itertools.product(*iterables))
-
-        # Criar tensor de dimensão igual ao número de sequências
-        matrix = np.zeros(seq_lengths, dtype=int)
-
-        # Obter numero de sequencias
-        num_seqs = len(sequences)
-
-        for i in range(len(product)):
-            list_iterador = list(product[i])
-            if all([sequences[0].char_at(product[i][0]) == seq.char_at(product[i][t]-1) for seq, t in zip(sequences,product[i])]):
-                # Obter iterador da diagonal anterior
-                it_diagonal = tuple([x-1 for x in list_iterador])
-
-                matrix[product[i]] = matrix.item(it_diagonal) + 1
-            else:
-                it_anteriores = [[x-1 if k == n else x for k,x in enumerate(list_iterador)] for n in range(num_seqs)]
-
-                matrix[product[i]] = max([matrix.item(tuple(it)) for it in it_anteriores])
-
-        for i in range(len(product)):
-            print(matrix.item(product[i]))
