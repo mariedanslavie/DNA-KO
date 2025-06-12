@@ -2,35 +2,40 @@ class SequenceAlignment:
     seq1 = []
     seq2 = []
     seq3 = []
-    sequences = [seq1, seq2] if seq3 == [] else [seq1, seq2, seq3]
 
     aligned_seq1 = []
     aligned_seq2 = []
     aligned_seq3 = [] 
-    aligned_seqs = [aligned_seq1, aligned_seq2] if seq3 == [] else [saligned_seq1, aligned_seq2, aligned_seq3]
-    aligned_seq = [0]
+    
     score = 0
 
-    def __init__(self,sequences, aligned_seqs,score):
-        self.seq1 = sequences[0]
-        self.seq2 = sequences[1]
-        self.seq3 = sequences[2] if len(sequences)==3 else None
-        self.sequences = sequences 
-        self.aligned_seq1 = aligned_seqs[0]
-        ##ISTO ESTA MALLL
-        self.aligned_seq2 = aligned_seqs[0]
-        self.aligned_seq3 = aligned_seqs[2] if len(sequences)==3 else None
-        self.aligned_seqs = aligned_seqs
+    def __init__(self,seq1, seq2, aligned_seq1, aligned_seq2, score, seq3 = None, aligned_seq3 = None):
+        self.seq1 = seq1
+        self.seq2 = seq2
+        self.seq3 = seq3
+
+        self.aligned_seq1 = aligned_seq1 
+        self.aligned_seq2 = aligned_seq2 
+        self.aligned_seq3 = aligned_seq3 
+
         self.score = score
 
-    # TODO
+        if seq3 == None:
+            self.sequences = [seq1, seq2]
+        else:
+            self.sequences = [seq1, seq2, seq3] 
+
+
+##### TODO
     def identity(self):
         return self.score
     
-    # TODO
+##### TODO
     def __str__(self):
-        return self.aligned_seq[0]
-    
+        return self.sequence_alignment
+
+
+###################### CODIGO DO CHATO TODO MARADO ################## 
     def create_aligned_seq(self, seq1, seq2, lcs_seq):
         i = j = k = 0
         aligned_seq1 = ""

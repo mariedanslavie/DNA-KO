@@ -7,9 +7,11 @@ class LCSFinder:
     sequences = []
     lcs_seq = ""
     flag = False
-
-    def __init__(self, sequences):
-        self.sequences = sequences
+# Flag serve para ver se as sequencias entraram num dos computes
+    def __init__(self, seq1, seq2, seq3 = None):
+        self.seq1 = seq1
+        self.seq2 = seq2
+        self.seq3 = seq3
 
 
     def compute_lcs(self):
@@ -17,18 +19,18 @@ class LCSFinder:
         if seqs_num <= 1:
             print("Error: Not enough sequences provided.")
             return None
+
         elif seqs_num == 2:
             self.lcs_seq = self.compute_lcs_2(self.sequences)
+            flag = True
+            return SequenceAlignment(self.sequences[0], self.sequences[1], self.aligned_seq1, self.aligned_seq2, 0) 
+
         elif seqs_num == 3:
             self.lcs_seq = self.compute_lcs_3(self.sequences)
-        elif seqs_num > 3:
-            self.lcs_seq = self.compute_lcs_n(self.sequences)
-
-#### Se as sequencias entrarem num destes if, a flag fica true
-        flag = True
-        return SequenceAlignment(self.sequences, [self.lcs_seq], 0) 
+            flag = True
+            return SequenceAlignment(self.sequences[0], self.sequences[1], self.sequences[2], self.aligned_seq1, self.aligned_seq2, self.aligned_seq3, 0) 
     
-    # TODO
+###TODO
     def get_lcs_length(self):
         if self.flag == False:
             return -1

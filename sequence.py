@@ -11,9 +11,6 @@ class Sequence:
     def __str__(self):
         return self.seq
     
-    def __len__(self):
-        return len(self.seq)
-    
     def length(self):
         return len(self.seq)
     

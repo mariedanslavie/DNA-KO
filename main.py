@@ -14,7 +14,7 @@ def readFile(file):
     :return: list of sequence objects
     """
 ### BRO PEGA NAS SEQUENCIAS E METE CADA UMA DENTRO DA LISTA SEQUENCES. O PROBLEMA É QUE A TERCEIRA POSICAO NAO PODE SER VAZIA
-### PORQUE VZIA CONTA NA MESMA COMO UMA LISTA.
+### PORQUE VaZIA CONTA NA MESMA COMO UMA LISTA.
     sequences = []
     i = 0
     with open(file, 'r') as f:
@@ -35,6 +35,16 @@ def main():
         print("Error: Input file not provided or non existent\nUsage: python .\\projeto_1 data\\<INPUT_FILE_PATH>")
         return -1
     
+ ####### código alternativo #####   
+    if seq3 == None:
+        finder = LCSFinder(seq1, seq2)        
+    else:
+        finder = LCSFinder(seq1, seq2, seq3)
+
+        aligned_seq = finder.compute_lcs()
+            print("The largest found sequence was: {0}".format(aligned_seq))
+
+######## código original ###########
     finder = LCSFinder(sequences)
     aligned_seq = finder.compute_lcs()
     print("The largest found sequence was: {0}".format(aligned_seq))
