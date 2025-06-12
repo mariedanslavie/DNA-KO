@@ -1,3 +1,2 @@
-abc
-abcd
-abcew
+ATTG
+ATCGC

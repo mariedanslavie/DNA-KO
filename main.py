@@ -13,7 +13,8 @@ def readFile(file):
     :param file: path to input file with all sequences
     :return: list of sequence objects
     """
-
+### BRO PEGA NAS SEQUENCIAS E METE CADA UMA DENTRO DA LISTA SEQUENCES. O PROBLEMA É QUE A TERCEIRA POSICAO NAO PODE SER VAZIA
+### PORQUE VZIA CONTA NA MESMA COMO UMA LISTA.
     sequences = []
     i = 0
     with open(file, 'r') as f:

@@ -5,11 +5,12 @@ import pprint
 
 class LCSFinder:
     sequences = []
-    aligned_seq = ""
+    lcs_seq = ""
     flag = False
 
-    def __init__(self,sequences):
+    def __init__(self, sequences):
         self.sequences = sequences
+
 
     def compute_lcs(self):
         seqs_num = len(self.sequences)
@@ -17,28 +18,28 @@ class LCSFinder:
             print("Error: Not enough sequences provided.")
             return None
         elif seqs_num == 2:
-            self.aligned_seq = self.compute_lcs_2(self.sequences)
+            self.lcs_seq = self.compute_lcs_2(self.sequences)
         elif seqs_num == 3:
-            self.aligned_seq = self.compute_lcs_3(self.sequences)
+            self.lcs_seq = self.compute_lcs_3(self.sequences)
         elif seqs_num > 3:
-            self.aligned_seq = self.compute_lcs_n(self.sequences)
+            self.lcs_seq = self.compute_lcs_n(self.sequences)
 
 #### Se as sequencias entrarem num destes if, a flag fica true
         flag = True
-        return SequenceAlignment(self.sequences, [self.aligned_seq], 0) 
+        return SequenceAlignment(self.sequences, [self.lcs_seq], 0) 
     
     # TODO
     def get_lcs_length(self):
         if self.flag == False:
             return -1
         else:
-            return len(self.aligned_seq)
+            return len(self.lcs_seq)
     
     # Funções internas
 
     #----------> Caso de num_seq == 2
     def compute_lcs_2(self,sequences):
-        aligned_seq = ""
+        lcs_seq = ""
 
         n = sequences[0].length()
         m = sequences[1].length()
@@ -64,29 +65,29 @@ class LCSFinder:
         print("")
         
         # Descobrir maior sequencia com base na matriz
-        aligned_seq = self.recursive_finder_2(matrix,(n+1)-1,(m+1)-1,aligned_seq)
+        lcs_seq = self.recursive_finder_2(matrix,(n+1)-1,(m+1)-1,lcs_seq)
 ### Demos nome ao resultado do recursive finder, e invertemos a sequencia, pq estava ao contrário
 
-        return aligned_seq[::-1]
+        return lcs_seq[::-1]
 
-    def recursive_finder_2(self,matrix,i,j,aligned_seq):
+    def recursive_finder_2(self,matrix,i,j,lcs_seq):
         if i <= 0 or j <= 0:
-            return aligned_seq
+            return lcs_seq
 
         if self.sequences[0].char_at(i-1) == self.sequences[1].char_at(j-1):
-            aligned_seq = aligned_seq + self.sequences[0].char_at(i-1)
-            return self.recursive_finder_2(matrix,i-1,j-1,aligned_seq)
+            lcs_seq = lcs_seq + self.sequences[0].char_at(i-1)
+            return self.recursive_finder_2(matrix,i-1,j-1,lcs_seq)
         else:
             if matrix[i-1][j] >= matrix[i][j-1]:
-                return self.recursive_finder_2(matrix,i-1,j,aligned_seq)
+                return self.recursive_finder_2(matrix,i-1,j,lcs_seq)
             else: 
-                return self.recursive_finder_2(matrix,i,j-1,aligned_seq) 
+                return self.recursive_finder_2(matrix,i,j-1,lcs_seq) 
     #<---------- Caso de num_seq == 2
 
     
     #----------> Caso de num_seq == 3
     def compute_lcs_3(self,sequences):
-        aligned_seq = ""
+        lcs_seq = ""
 
         n = sequences[0].length()
         m = sequences[1].length()
@@ -110,22 +111,22 @@ class LCSFinder:
         print("")
         
         # Descobrir maior sequencia com base na matriz
-        aligned_seq = self.recursive_finder_3(matrix,(n+1)-1,(m+1)-1,(r+1)-1,aligned_seq)
+        lcs_seq = self.recursive_finder_3(matrix,(n+1)-1,(m+1)-1,(r+1)-1,lcs_seq)
 
-        return aligned_seq[::-1]
+        return lcs_seq[::-1]
 
-    def recursive_finder_3(self,matrix,i,j,k,aligned_seq):
+    def recursive_finder_3(self,matrix,i,j,k,lcs_seq):
         if i <= 0 or j <= 0 or k <= 0:
-            return aligned_seq
+            return lcs_seq
 
         if self.sequences[0].char_at(i-1) == self.sequences[1].char_at(j-1) and self.sequences[0].char_at(i-1) == self.sequences[2].char_at(k-1):
-            aligned_seq = aligned_seq + self.sequences[0].char_at(i-1)
-            return self.recursive_finder_3(matrix,i-1,j-1,k-1,aligned_seq)
+            lcs_seq = lcs_seq + self.sequences[0].char_at(i-1)
+            return self.recursive_finder_3(matrix,i-1,j-1,k-1,lcs_seq)
         else:
             if matrix[i-1][j][k] >= matrix[i][j][k-1] and matrix[i-1][j][k] >= matrix[i][j-1][k]:
-                return self.recursive_finder_3(matrix,i-1,j,k,aligned_seq)
+                return self.recursive_finder_3(matrix,i-1,j,k,lcs_seq)
             elif matrix[i][j-1][k] >= matrix[i][j][k-1] and matrix[i][j-1][k] >= matrix[i-1][j][k]:
-                return self.recursive_finder_3(matrix,i,j-1,k,aligned_seq)
+                return self.recursive_finder_3(matrix,i,j-1,k,lcs_seq)
             else: 
-                return self.recursive_finder_3(matrix,i,j,k-1,aligned_seq) 
+                return self.recursive_finder_3(matrix,i,j,k-1,lcs_seq) 
     #<---------- Caso de num_seq == 3
