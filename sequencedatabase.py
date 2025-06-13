@@ -11,14 +11,21 @@ class SequenceDataBase:
     def add_sequence(self, sequence):
         self.sequences.append(sequence)
 
-# DEVE ESTAR BOM
+    # def get_sequence_by_id(self, id):
+    #     for seq in self.sequences:
+    #         if seq.id == id:
+    #             return seq
+    #         else:
+    #             print("No sequence found with id: {0}".format(id))
+    #             return None
+
+### VERSAO FUNCIONAL
     def get_sequence_by_id(self, id):
-        for seq in self.sequence:
-            if seq.id == id:
-                return seq
-            else:
-                print("No sequence found with id: {0}".format(id))
-                return None
+        seq = next(filter(lambda s: s.id == id, self.sequences), None)
+        if seq is None:
+            print("No sequence found with id: {0}".format(id))
+        return seq
+
 
 # DEVE ESTAR BOM
     def load_from_fasta(self, filename):

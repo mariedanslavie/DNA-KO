@@ -1,7 +1,5 @@
 from sequencealignment import *
 import pprint
-### tirei o numpy e o itertools (confirma se era mesmo só preciso para o codigo de n sequencias)
-
 
 class LCSFinder:
     sequences = []
@@ -11,8 +9,8 @@ class LCSFinder:
 
     lcs_seq = ""
     flag = False
+    # Flag serve para ver se as sequencias entraram num dos computes
 
-# Flag serve para ver se as sequencias entraram num dos computes
     def __init__(self, seq1, seq2, seq3 = None):
         self.seq1 = seq1
         self.seq2 = seq2
@@ -23,7 +21,7 @@ class LCSFinder:
         else:   
             self.sequences = [seq1, seq2, seq3]
 
-           ###################### NOSSO CODIGO align ################## 
+    ###################### NOSSO CODIGO align ################## 
     def create_aligned_seq(self, seq, lcs_seq ):
         aligned_seq = ""
         i = 0 #correr seq
@@ -39,25 +37,24 @@ class LCSFinder:
         if i <seq.length()-1:
             aligned_seq = aligned_seq + "-"
 
-        
+
 
         print("aligned_seq: ", aligned_seq)
         return aligned_seq
 
-
     def compute_lcs(self):
         seqs_num = len(self.sequences)
+        ## Se só existir uma sequência, então não há LCS a calcular
         if seqs_num <= 1:
             print("Error: Not enough sequences provided.")
             return None
-
+        ## Se existirem duas ou três sequências, então podemos calcular o LCS
         elif seqs_num == 2:
             self.lcs_seq = self.compute_lcs_2()
             print("LCS sequence: ", self.lcs_seq)
             self.flag = True
             aligned_seq1 = self.create_aligned_seq(self.seq1, self.lcs_seq)
             aligned_seq2 = self.create_aligned_seq(self.seq2, self.lcs_seq)
-
             return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, 0) 
 
         elif seqs_num == 3:
@@ -66,30 +63,27 @@ class LCSFinder:
             aligned_seq1 = self.create_aligned_seq(self.seq1, self.lcs_seq)
             aligned_seq2 = self.create_aligned_seq(self.seq2, self.lcs_seq)
             aligned_seq3 = self.create_aligned_seq(self.seq3, self.lcs_seq)
-
             return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, 0, self.seq3, aligned_seq3) 
         
         else:
             print("Error: Could not compute LCS algorithm")
             return None
         
-
-# DEVE ESTAR BOM
+    # Funcao da length do LCS
     def get_lcs_length(self):
         if self.flag == False:
             print("LCS not computed yet, therefore no length available.")
-
             return -1
         else:
             return len(self.sequence_alignment)
     
-    # Funções internas
+    ### Funções internas
 
     #----------> Caso de num_seq == 2
     def compute_lcs_2(self):
         lcs_seq = ""
-### como aqui n passei o seq 1 e 2 como argumentos, tenho de usar self.seq1 e self.seq2
 
+    # como aqui n passei o seq 1 e 2 como argumentos, tenho de usar self.seq1 e self.seq2
         n = self.seq1.length()
         m = self.seq2.length()
 
@@ -114,12 +108,11 @@ class LCSFinder:
 #             print(l)
 #         print("")
         
-        # Descobrir maior sequencia com base na matriz
+        # Demos nome ao resultado do recursive finder, e invertemos a sequencia, pq estava ao contrário
         lcs_seq = self.recursive_finder_2(matrix,(n+1)-1,(m+1)-1,lcs_seq)
-### Demos nome ao resultado do recursive finder, e invertemos a sequencia, pq estava ao contrário
-
         return lcs_seq[::-1]
 
+    # Função recursiva que descobre a maior sequencia com base na matriz
     def recursive_finder_2(self,matrix,i,j,lcs_seq):
         if i <= 0 or j <= 0:
             return lcs_seq

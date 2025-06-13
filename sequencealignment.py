@@ -58,7 +58,10 @@ class SequenceAlignment:
         else:
             aligned_seq1 = create_aligned_seq1(self.seq1, self.seq2, self.sequence_alignment)
             aligned_seq2 = create_aligned_seq2(self.seq1, self.seq2, self.sequence_alignment)
-            self.score = len(positions1)/len(aligned_seq1) #############aligned seq é uma string ou uma lista?
+            #self.score = len(positions1)/len(aligned_seq1) #############aligned seq é uma string ou uma lista?
+            #### VERSAO FUNCIONAL da linha anterior
+            self.score = (lambda p, a: len(p) / len(a))(positions1, aligned_seq1)
+
         return self.score
     
     
