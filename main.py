@@ -58,16 +58,14 @@ def main():
     else:
         finder = LCSFinder(seq1, seq2, seq3)
 
-    for x in finder.sequences:
-        print(x)
 
     sequence_alignment = finder.compute_lcs()
-    print("The largest found sequence was: {0}".format(sequence_alignment))
+    print("The largest found sequence was: {0}".format(finder.lcs_seq))
 
 # ######## código original ###########
 #     finder = LCSFinder(sequences)
 #     sequence_alignment = finder.compute_lcs()
-#     print("The largest found sequence was: {0}".format(aligsequence_alignmentned_seq))
+#     print("The largest found sequence was: {0}".format(finder.lcs_seq))
 
 # Redirects to main
 if __name__ == "__main__":

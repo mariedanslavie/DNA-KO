@@ -1,11 +1,14 @@
+from sequence import *
+from lcsfinder import *
+
 class SequenceAlignment:
     seq1 = []
     seq2 = []
     seq3 = []
 
-    aligned_seq1 = []
-    aligned_seq2 = []
-    aligned_seq3 = [] 
+    aligned_seq1 = ""
+    aligned_seq2 = ""
+    aligned_seq3 = "" 
     
     score = 0
 
@@ -14,6 +17,7 @@ class SequenceAlignment:
         self.seq2 = seq2
         self.seq3 = seq3
 
+#########ISTO É NECESSRIO?
         self.aligned_seq1 = aligned_seq1 
         self.aligned_seq2 = aligned_seq2 
         self.aligned_seq3 = aligned_seq3 
@@ -25,20 +29,54 @@ class SequenceAlignment:
         else:
             self.sequences = [seq1, seq2, seq3] 
 
+      
+ 
+
+        ###################### NOSSO CODIGO align 2 ################## 
+    def create_aligned_seq2(self, seq2, sequence_alignment):
+        j = 0
+        k = 0
+        positions2 = 0
+        while j < len(self.seq2)-1 and j < len(self.lcs_seq)-1:
+            if self.seq2.char_at(j) == self.lcs_seq[k]:
+                aligned_seq2 = aligned_seq2 + self.seq2.char_at(j)
+                positions2 = positions2 + j
+                j+=1
+                k+=1
+            else: 
+                aligned_seq2.append('-')
+                j+=1
+        return aligned_seq2
 
 ##### TODO ----- Feito?
     def identity(self):
+        positions1 = 0
+        positions2 = 0
+        if positions1 != positions2:
+            print("Error: Sequences are not aligned properly, cannot compute identity.")
+            return -1
+        else:
+            aligned_seq1 = create_aligned_seq1(self.seq1, self.seq2, self.sequence_alignment)
+            aligned_seq2 = create_aligned_seq2(self.seq1, self.seq2, self.sequence_alignment)
+            self.score = len(positions1)/len(aligned_seq1) #############aligned seq é uma string ou uma lista?
         return self.score
     
-##### TODO  ----- Feito?
+    
+# DEVE ESTAR BOM
     def __str__(self):
         if self.seq3 == None:
-            return ' '.join(aligned_seq1) + "\n" + ' '.join(aligned_seq2)
+            return self.aligned_seq1 + "\n" + self.aligned_seq2
         else: 
-            return ' '.join(aligned_seq1) + "\n" + ' '.join(aligned_seq2) + "\n" + ' '.join(aligned_seq3)
+            return self.aligned_seq1 + "\n" + self.aligned_seq2 + "\n" + self.aligned_seq3
 
 
 
+   
+
+
+
+
+       
 
 # ###################### CODIGO DO CHATO TODO MARADO ################## 
 #     def create_aligned_seq(self, seq1, seq2, sequence_alignment):

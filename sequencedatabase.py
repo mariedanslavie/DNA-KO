@@ -27,11 +27,12 @@ class SequenceDataBase:
         description = ""
         seq = ""
         flag = False
+        break_flag = False
 
         with open(filename, 'r') as f:
             for line in f:
                 if ">" in line:
-    #se sequences estiver vazio, entao o > em questao esta na primeira linha do fasta
+                    # se sequences estiver vazio, entao o > em questao esta na primeira linha do fasta
                     if flag == False:
                         description = line.strip()
                         flag = True
@@ -39,13 +40,19 @@ class SequenceDataBase:
 
                     else:
                         self.sequences.append(Sequence(str(i), description, seq))
+                        seq = ""
                         i = i +1
                         description = line.strip()
                         
                     ##garantir que nao lemos mais que 3 sequencias
                         if i >= 3:
+                            break_flag = True
                             break
-                            
+ 
                         continue
                 else:
                     seq = seq + line.strip()      
+            
+            # Caso nao faça break, ainda temos uma sequência a ser adicionada
+            if break_flag == False:
+                self.sequences.append(Sequence(str(i), description, seq))
