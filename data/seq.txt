@@ -1,2 +1,9 @@
+> macaquinho
 ATTG
-ATCGC
+ATGSGC
+> humano
+TCATCCTCG
+> macaco
+ATAACATG
+> macaco3
+ATAACATGASDAAS

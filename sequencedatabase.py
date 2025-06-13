@@ -1,30 +1,51 @@
+from sequence import *
+
+
 class SequenceDataBase:
-####ISTO PODE ESTAR TUDO ERRADO EU N PERCEBO NADA DISTO MALTA
+    sequences = []
+
     def __init__(self):
-        self.sequence = {}
+        self.sequences = []
 
-###TODO
+# DEVE ESTAR BOM
     def add_sequence(self, sequence):
-        SequenceDataBase.append(sequence)
+        self.sequences.append(sequence)
 
-###TODO
+# DEVE ESTAR BOM
     def get_sequence_by_id(self, id):
-        return sequence.id
+        for seq in self.sequence:
+            if seq.id == id:
+                return seq
+            else:
+                print("No sequence found with id: {0}".format(id))
+                return None
 
-###TODO  ANTIGO
+# DEVE ESTAR BOM
     def load_from_fasta(self, filename):
-        with open(file, 'r') as f:
-            for line in f:
-                sequences.append(Sequence(str(i),"",line.strip()))
-                i = i + 1
-        return sequences
+        self.sequences = []
+        i = 0
+        description = ""
+        seq = ""
+        flag = False
 
-###TODO ACTUAL 
-    def load_from_fasta(self, filename):
-        with open(file, 'r') as f:
+        with open(filename, 'r') as f:
             for line in f:
-                if line contains == <:
-                    continue
+                if ">" in line:
+    #se sequences estiver vazio, entao o > em questao esta na primeira linha do fasta
+                    if flag == False:
+                        description = line.strip()
+                        flag = True
+                        continue
+
+                    else:
+                        self.sequences.append(Sequence(str(i), description, seq))
+                        i = i +1
+                        description = line.strip()
+                        
+                    ##garantir que nao lemos mais que 3 sequencias
+                        if i >= 3:
+                            break
+                            
+                        continue
                 else:
-                    sequences.append(Sequence(str(i), "", line.strip()))
-            return sequences
+                    seq = seq + line.strip()      
