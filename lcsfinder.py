@@ -61,10 +61,6 @@ class LCSFinder:
                 else:
                     matrix_direction[i][j] = ["d"]
         
-        for row in matrix_direction:
-            print(row)
-
-
         aligned_seq1, aligned_seq2 = self.recursive_seq_align(matrix_direction,(n+1)-1,(m+1)-1,"", "")
         return aligned_seq1, aligned_seq2 
     
