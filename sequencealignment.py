@@ -29,22 +29,21 @@ class SequenceAlignment:
             self.sequences = [seq1, seq2, seq3] 
 
 
-##### TODO ----- Feito?
     def identity(self):
-        positions1 = 0
-        positions2 = 0
-        if positions1 != positions2:
-            print("Error: Sequences are not aligned properly, cannot compute identity.")
-            return -1
+        self.score = len (self.aligned_seq1)
+        count = 0
+        if self.seq3 == None:
+            # a é do aligned_seq1 e b é do aligned_seq2
+            for a,b in zip(self.aligned_seq1, self.aligned_seq2):
+                if a == b:
+                    count = count + 1
         else:
-            # aligned_seq1 = needleman_wunch(self.seq1, self.seq2, self.sequence_alignment)
-            # aligned_seq2 = needleman_wunch(self.seq1, self.seq2, self.sequence_alignment)
-            
-            #self.score = len(positions1)/len(aligned_seq1) #############aligned seq é uma string ou uma lista?
-            #### VERSAO FUNCIONAL da linha anterior
-            self.score = (lambda p, a: len(p) / len(a))(positions1, aligned_seq1)
-
-        return self.score
+            for a,b,c in zip(self.aligned_seq1, self.aligned_seq2, self.aligned_seq3):
+                if a == b and a == c:
+                    count = count + 1
+    
+        x = lambda p, a: round((p / a) * 100) if a > 0 else 0
+        return x (count, self.score)
     
     
 # DEVE ESTAR BOM
@@ -54,52 +53,3 @@ class SequenceAlignment:
         else: 
             return self.aligned_seq1 + "\n" + self.aligned_seq2 + "\n" + self.aligned_seq3
 
-
-
-   
-
-
-
-
-       
-
-# ###################### CODIGO DO CHATO TODO MARADO ################## 
-#     def create_aligned_seq(self, seq1, seq2, sequence_alignment):
-#         i = j = k = 0
-#         aligned_seq1 = ""
-#         aligned_seq2 = ""
-
-#         while k < len(sequence_alignment):
-#             # Avança na X até encontrar o próximo caracter da LCS
-#             while i < len(self.seq1) and self.seq1[i] != sequence_alignment[k]:
-#                 aligned_seq1 += self.seq1[i]
-#                 aligned_seq2 += "-"
-#                 i += 1
-
-#             # Avança na Y até encontrar o mesmo caracter da LCS
-#             while j < len(self.seq2) and self.seq2[j] != sequence_alignment[k]:
-#                 aligned_seq1 += "-"
-#                 aligned_seq2 += self.seq2[j]
-#                 j += 1
-
-#             # Ambos têm o caracter da LCS → alinhamento válido
-#             if i < len(self.seq1) and j < len(self.seq2) and self.seq1[i] == self.seq2[j] == sequence_alignment[k]:
-#                 aligned_seq1 += self.seq1[i]
-#                 aligned_seq2 += self.seq2[j]
-#                 i += 1
-#                 j += 1
-#                 k += 1
-
-#         # Adiciona o que resta de X
-#         while i < len(self.seq1):
-#             aligned_seq1 += self.seq1[i]
-#             aligned_seq2 += "-"
-#             i += 1
-
-#         # Adiciona o que resta de Y
-#         while j < len(self.seq2):
-#             aligned_seq1 += "-"
-#             aligned_seq2 += self.seq2[j]
-#             j += 1
-
-#         return aligned_seq1, aligned_seq2

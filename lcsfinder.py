@@ -23,10 +23,10 @@ class LCSFinder:
             self.sequences = [seq1, seq2, seq3]
 
 
-    #----------> needleman wunch
-    def needleman_wunch(self, seq1, seq2):
-        n = self.seq1.length()
-        m = self.seq2.length()
+    #----------> needleman wunsch
+    def needleman_wunsch_2(self, seqa, seqb):
+        n = seqa.length()
+        m = seqb.length()
         match_score = 10
         missmatch_score = -2
         gap_penalty = -5
@@ -47,7 +47,7 @@ class LCSFinder:
         # Preencher matriz scores : Match = 10, Mismatch = -2 e Gap = -5
         for i in range(1,n+1):
             for j in range(1,m+1):    
-                if self.seq1.char_at(i-1) == self.seq2.char_at(j-1):
+                if seqa.char_at(i-1) == seqb.char_at(j-1):
                     score = match_score
                 else:
                     score = missmatch_score   
@@ -55,38 +55,148 @@ class LCSFinder:
                 
                 # Preencher matriz direcoes
                 if (matrix_score[i-1][j] + gap_penalty) >= (matrix_score[i][j-1] + gap_penalty) and (matrix_score[i-1][j] + gap_penalty) >= (matrix_score[i-1][j-1] + score):
-                    matrix_direction[i][j] = ["u"] 
-                elif (matrix_score[i][j-1] + gap_penalty) >= (matrix_score[i-1][j] + gap_penalty) and (matrix_score[i][j-1] + gap_penalty) >= (matrix_score[i-1][j-1] + score):
+                    matrix_direction[i][j] = ["u"]
+                if (matrix_score[i][j-1] + gap_penalty) >= (matrix_score[i-1][j] + gap_penalty) and (matrix_score[i][j-1] + gap_penalty) >= (matrix_score[i-1][j-1] + score):
                     matrix_direction[i][j] = ["l"]
-                else:
+                if (matrix_score[i-1][j-1] + score) >= (matrix_score[i][j-1] + gap_penalty) and (matrix_score[i-1][j-1] + score) >= (matrix_score[i-1][j] + gap_penalty):
                     matrix_direction[i][j] = ["d"]
+
         
-        aligned_seq1, aligned_seq2 = self.recursive_seq_align(matrix_direction,(n+1)-1,(m+1)-1,"", "")
-        return aligned_seq1, aligned_seq2 
+        aligned_seqa, aligned_seqb = self.recursive_seq_align_2(seqa, seqb, matrix_direction,(n+1)-1,(m+1)-1,"", "")
+        return aligned_seqa, aligned_seqb 
     
     # Função recursiva que descobre o alinhamento com base na matriz        
     
-    def recursive_seq_align(self,matrix_direction,i,j,aligned_seq1,aligned_seq2):
+    def recursive_seq_align_2(self,seqa, seqb, matrix_direction,i,j,aligned_seqa,aligned_seqb):
         # Se i ou j forem <= 0, entao chegamos ao fim da matriz, e retornamos as sequencias alinhadas invertidas (comecamos no fim)
         if i <= 0 or j <= 0:
-            return aligned_seq1[::-1], aligned_seq2[::-1]
-
-        if matrix_direction[i][j] == ["d"]:
-            aligned_seq1 = aligned_seq1 + self.seq1.char_at(i-1)
-            aligned_seq2 = aligned_seq2 + self.seq2.char_at(j-1)
-            return self.recursive_seq_align(matrix_direction,i-1,j-1,aligned_seq1,aligned_seq2)
+            return aligned_seqa[::-1], aligned_seqb[::-1]
+        
+        # prioridade: diagonal, depois up, depois left
+        if "d" in matrix_direction[i][j]:
+            aligned_seqa = aligned_seqa + seqa.char_at(i-1)
+            aligned_seqb = aligned_seqb + seqb.char_at(j-1)
+            return self.recursive_seq_align_2(seqa, seqb, matrix_direction,i-1,j-1,aligned_seqa,aligned_seqb)
                     
-        elif matrix_direction[i][j] == ["u"]:
-            aligned_seq1 = aligned_seq1 + self.seq1.char_at(i-1)
-            aligned_seq2 = aligned_seq2 + "-"
-            return self.recursive_seq_align(matrix_direction,i-1,j,aligned_seq1,aligned_seq2)
+        elif "u" in matrix_direction[i][j]:
+            aligned_seqa = aligned_seqa + seqa.char_at(i-1)
+            aligned_seqb = aligned_seqb + "-"
+            return self.recursive_seq_align_2(seqa, seqb, matrix_direction,i-1,j,aligned_seqa,aligned_seqb)
                 
-        else: # matrix_direction[i][j] == ["l"]
-            aligned_seq1 = aligned_seq1 + "-"
-            aligned_seq2 = aligned_seq2 + self.seq2.char_at(j-1)
-            return self.recursive_seq_align(matrix_direction,i,j-1,aligned_seq1,aligned_seq2)
+        else: # "l" in matrix_direction[i][j]
+            aligned_seqa = aligned_seqa + "-"
+            aligned_seqb = aligned_seqb + seqb.char_at(j-1)
+            return self.recursive_seq_align_2(seqa, seqb, matrix_direction,i,j-1,aligned_seqa,aligned_seqb)
             
-    #<---------- needleman wunch fim
+    #<---------- needleman wunsch fim
+
+
+
+    def needleman_wunsch_3(self, seqa, seqb, seqc):
+        n, m, p = seqa.length(), seqb.length(), seqc.length()
+        match_score = 10
+        mismatch_score = -2
+        gap_penalty = -5
+
+        # Inicializar matriz de pontuação e direção em 3D
+        score_matrix = [[[0 for _ in range(p+1)] for _ in range(m+1)] for _ in range(n+1)]
+        direction_matrix = [[[[] for _ in range(p+1)] for _ in range(m+1)] for _ in range(n+1)]
+
+        # Inicialização da matriz (fronteiras com gaps)
+        for i in range(n+1):
+            for j in range(m+1):
+                for k in range(p+1):
+                    if i == 0 and j == 0 and k == 0:
+                        continue
+                    scores = []
+                    directions = []
+
+                    if i > 0:
+                        scores.append(score_matrix[i-1][j][k] + 2 * gap_penalty)
+                        directions.append(("u",))
+                    if j > 0:
+                        scores.append(score_matrix[i][j-1][k] + 2 * gap_penalty)
+                        directions.append(("l",))
+                    if k > 0:
+                        scores.append(score_matrix[i][j][k-1] + 2 * gap_penalty)
+                        directions.append(("f",))
+                    if i > 0 and j > 0:
+                        scores.append(score_matrix[i-1][j-1][k] + gap_penalty + mismatch_score)
+                        directions.append(("u", "l"))
+                    if i > 0 and k > 0:
+                        scores.append(score_matrix[i-1][j][k-1] + gap_penalty + mismatch_score)
+                        directions.append(("u", "f"))
+                    if j > 0 and k > 0:
+                        scores.append(score_matrix[i][j-1][k-1] + gap_penalty + mismatch_score)
+                        directions.append(("l", "f"))
+                    if i > 0 and j > 0 and k > 0:
+                        a, b, c = seqa.char_at(i-1), seqb.char_at(j-1), seqc.char_at(k-1)
+                        if a == b == c:
+                            score = match_score
+                        elif a == b or b == c or a == c:
+                            score = mismatch_score  # 2 iguais
+                        else:
+                            score = 2 * mismatch_score  # todos diferentes
+                        scores.append(score_matrix[i-1][j-1][k-1] + score)
+                        directions.append(("d",))
+
+                    max_score = max(scores)
+                    best_dir = directions[scores.index(max_score)]
+                    score_matrix[i][j][k] = max_score
+                    direction_matrix[i][j][k] = best_dir
+
+        aligned_seqa, aligned_seqb, aligned_seqc = self.recursive_seq_align_3(seqa, seqb, seqc, direction_matrix, n, m, p, "", "", "")
+        return aligned_seqa, aligned_seqb, aligned_seqc
+
+
+    def recursive_seq_align_3(self, seqa, seqb, seqc, matrix_direction, i, j, k, aligned_a, aligned_b, aligned_c):
+        if i <= 0 and j <= 0 and k <= 0:
+            return aligned_a[::-1], aligned_b[::-1], aligned_c[::-1]
+
+        direction = matrix_direction[i][j][k][0]
+
+        if direction == "d":
+            aligned_a += seqa.char_at(i-1)
+            aligned_b += seqb.char_at(j-1)
+            aligned_c += seqc.char_at(k-1)
+            return self.recursive_seq_align_3(seqa, seqb, seqc, matrix_direction, i-1, j-1, k-1, aligned_a, aligned_b, aligned_c)
+
+        elif direction == "ul":
+            aligned_a += seqa.char_at(i-1)
+            aligned_b += seqb.char_at(j-1)
+            aligned_c += "-"
+            return self.recursive_seq_align_3(seqa, seqb, seqc, matrix_direction, i-1, j-1, k, aligned_a, aligned_b, aligned_c)
+
+        elif direction == "uf":
+            aligned_a += seqa.char_at(i-1)
+            aligned_b += "-"
+            aligned_c += seqc.char_at(k-1)
+            return self.recursive_seq_align_3(seqa, seqb, seqc, matrix_direction, i-1, j, k-1, aligned_a, aligned_b, aligned_c)
+
+        elif direction == "lf":
+            aligned_a += "-"
+            aligned_b += seqb.char_at(j-1)
+            aligned_c += seqc.char_at(k-1)
+            return self.recursive_seq_align_3(seqa, seqb, seqc, matrix_direction, i, j-1, k-1, aligned_a, aligned_b, aligned_c)
+
+        elif direction == "u":
+            aligned_a += seqa.char_at(i-1)
+            aligned_b += "-"
+            aligned_c += "-"
+            return self.recursive_seq_align_3(seqa, seqb, seqc, matrix_direction, i-1, j, k, aligned_a, aligned_b, aligned_c)
+
+        elif direction == "l":
+            aligned_a += "-"
+            aligned_b += seqb.char_at(j-1)
+            aligned_c += "-"
+            return self.recursive_seq_align_3(seqa, seqb, seqc, matrix_direction, i, j-1, k, aligned_a, aligned_b, aligned_c)
+
+        else:  # direction == "f"
+            aligned_a += "-"
+            aligned_b += "-"
+            aligned_c += seqc.char_at(k-1)
+            return self.recursive_seq_align_3(seqa, seqb, seqc, matrix_direction, i, j, k-1, aligned_a, aligned_b, aligned_c)
+        #<---------- needleman wunsch 2 fim
 
 
 
@@ -103,17 +213,16 @@ class LCSFinder:
             self.lcs_seq = self.compute_lcs_2()
             print("LCS sequence: ", self.lcs_seq)
 
-            aligned_seq1, aligned_seq2 = self.needleman_wunch(self.seq1, self.seq2)
+            aligned_seq1, aligned_seq2 = self.needleman_wunsch_2(self.seq1, self.seq2)
             self.flag = True
             return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, 0) 
 
-        # elif seqs_num == 3:
-        #     self.lcs_seq = self.compute_lcs_3()
-        #     self.flag = True
-        #     # aligned_seq1 = self.create_aligned_seq(self.seq1, self.lcs_seq)
-        #     # aligned_seq2 = self.create_aligned_seq(self.seq2, self.lcs_seq)
-        #     # aligned_seq3 = self.create_aligned_seq(self.seq3, self.lcs_seq)
-        #     return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, 0, self.seq3, aligned_seq3) 
+        elif seqs_num == 3:
+            self.lcs_seq = self.compute_lcs_3()
+            self.flag = True
+            aligned_seq1, aligned_seq2, aligned_seq3= self.needleman_wunsch_3(self.seq1, self.seq2, self.seq3)
+            #needleman recebe objetos Sequence, por isso é que criei estes temporarios
+            return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, 0, self.seq3, aligned_seq3) 
         
         else:
             print("Error: Could not compute LCS algorithm")

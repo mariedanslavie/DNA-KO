@@ -37,14 +37,15 @@ def main():
 
 
     sequence_alignment = finder.compute_lcs()
-    print("The largest found sequence was: {0}".format(finder.lcs_seq))
-
-    #pls nao esquecer de meter isto bem bonito (tira o <)
-    print("The largest found sequence was: {0} therefore the gene id: {1} and description: {2} is very pretty yes lookalike girliepop".format(finder.lcs_seq, finder.seq1.id, finder.seq1.description))
+    print("The largest found sequence was:\t {0}".format(finder.lcs_seq))
 
     # para fzr prints de teste do needleman wunch
-    needle = LCSFinder(seq1, seq2)
-    print(needle.needleman_wunch(seq1, seq2))
+    print("Aligned Sequence 1:\t" + sequence_alignment.aligned_seq1)
+    print("Aligned Sequence 2:\t" + sequence_alignment.aligned_seq2)
+    if seq3 != None:
+        print("Aligned Sequence 3:\t" + sequence_alignment.aligned_seq3)
+
+    print("Identity Score for aligned sequences: {0} %".format(sequence_alignment.identity()))
 
 # Redirects to main
 if __name__ == "__main__":

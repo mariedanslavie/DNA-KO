@@ -19,7 +19,7 @@ class SequenceDataBase:
     #             print("No sequence found with id: {0}".format(id))
     #             return None
 
-### VERSAO FUNCIONAL
+####################################################### VERSAO FUNCIONAL
     def get_sequence_by_id(self, id):
         seq = next(filter(lambda s: s.id == id, self.sequences), None)
         if seq is None:
