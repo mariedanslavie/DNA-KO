@@ -7,19 +7,10 @@ class SequenceDataBase:
     def __init__(self):
         self.sequences = []
 
-# DEVE ESTAR BOM
+
     def add_sequence(self, sequence):
         self.sequences.append(sequence)
 
-    # def get_sequence_by_id(self, id):
-    #     for seq in self.sequences:
-    #         if seq.id == id:
-    #             return seq
-    #         else:
-    #             print("No sequence found with id: {0}".format(id))
-    #             return None
-
-####################################################### VERSAO FUNCIONAL
     def get_sequence_by_id(self, id):
         seq = next(filter(lambda s: s.id == id, self.sequences), None)
         if seq is None:
@@ -27,14 +18,17 @@ class SequenceDataBase:
         return seq
 
 
-# DEVE ESTAR BOM
     def load_from_fasta(self, filename):
+        """For each line in file, create a sequence object with the sequence in the line
+        :param filename: str - path to input file with all sequences
+        """
+        # :return: list of sequence objects
+
         self.sequences = []
         i = 0
         description = ""
         seq = ""
         flag = False
-        break_flag = False
 
         with open(filename, 'r') as f:
             for line in f:
@@ -50,16 +44,9 @@ class SequenceDataBase:
                         seq = ""
                         i = i +1
                         description = line.strip()
-                        
-                    ##garantir que nao lemos mais que 3 sequencias
-                        if i >= 3:
-                            break_flag = True
-                            break
- 
                         continue
                 else:
                     seq = seq + line.strip()      
             
-            # Caso nao faça break, ainda temos uma sequência a ser adicionada
-            if break_flag == False:
-                self.sequences.append(Sequence(str(i), description, seq))
+            # Ainda temos uma sequência a ser adicionada
+            self.sequences.append(Sequence(str(i), description, seq))

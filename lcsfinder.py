@@ -2,26 +2,19 @@ from sequencealignment import *
 import pprint
 
 class LCSFinder:
-    sequences = []
-    seq1 = None
-    seq2 = None
-    seq3 = None
-
-    
-    lcs_seq = ""
-    flag = False
-    # Flag serve para ver se as sequencias entraram num dos computes
-
     def __init__(self, seq1, seq2, seq3 = None):
         self.seq1 = seq1
         self.seq2 = seq2
         self.seq3 = seq3
+        
+        self.lcs_seq = "" # Inicializa o LCS para esta instância
+        self.flag = False # Inicializa a flag para esta instância
+        # Flag serve para ver se as sequencias entraram num dos computes
 
         if seq3 == None:
             self.sequences = [seq1, seq2]
         else:   
             self.sequences = [seq1, seq2, seq3]
-
 
     #----------> needleman wunsch
     def needleman_wunsch_2(self, seqa, seqb):
@@ -215,14 +208,14 @@ class LCSFinder:
 
             aligned_seq1, aligned_seq2 = self.needleman_wunsch_2(self.seq1, self.seq2)
             self.flag = True
-            return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, 0) 
+            return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, self.get_lcs_length()) 
 
         elif seqs_num == 3:
             self.lcs_seq = self.compute_lcs_3()
             self.flag = True
             aligned_seq1, aligned_seq2, aligned_seq3= self.needleman_wunsch_3(self.seq1, self.seq2, self.seq3)
             #needleman recebe objetos Sequence, por isso é que criei estes temporarios
-            return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, 0, self.seq3, aligned_seq3) 
+            return SequenceAlignment(self.seq1, self.seq2, aligned_seq1, aligned_seq2, self.get_lcs_length(), self.seq3, aligned_seq3) 
         
         else:
             print("Error: Could not compute LCS algorithm")
@@ -234,7 +227,7 @@ class LCSFinder:
             print("LCS not computed yet, therefore no length available.")
             return -1
         else:
-            return len(self.sequence_alignment)
+            return len(self.lcs_seq)
     
     ### Funções internas
 
