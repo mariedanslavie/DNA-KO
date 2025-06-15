@@ -9,9 +9,17 @@ class SequenceDataBase:
 
 
     def add_sequence(self, sequence):
+        """Adds a sequence object to the database.
+        :param sequence: Sequence - sequence object to be added
+        """
         self.sequences.append(sequence)
 
     def get_sequence_by_id(self, id):
+        """Returns a sequence object by its id.
+        :param id: str - id of the sequence to be retrieved
+        :return: Sequence - sequence object with the given id or None if not found
+        """
+        # funcao filter recebe uma funcao lambda que verifica se o id do objeto sequence é igual ao id dado
         seq = next(filter(lambda s: s.id == id, self.sequences), None)
         if seq is None:
             print("No sequence found with id: {0}".format(id))

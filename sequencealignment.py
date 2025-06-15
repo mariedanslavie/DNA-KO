@@ -30,10 +30,13 @@ class SequenceAlignment:
 
 
     def identity(self):
+        """Calculates the identity score of the aligned sequences.
+        :return: int - identity score as a percentage
+        """
         self.score = len (self.aligned_seq1)
         count = 0
         if self.seq3 == None:
-            # a é do aligned_seq1 e b é do aligned_seq2
+            ### a é do aligned_seq1 e b é do aligned_seq2
             for a,b in zip(self.aligned_seq1, self.aligned_seq2):
                 if a == b:
                     count = count + 1
@@ -41,13 +44,16 @@ class SequenceAlignment:
             for a,b,c in zip(self.aligned_seq1, self.aligned_seq2, self.aligned_seq3):
                 if a == b and a == c:
                     count = count + 1
-    
+        # x é uma função lambda que calcula a percentagem de identidade
         x = lambda p, a: round((p / a) * 100) if a > 0 else 0
         return x (count, self.score)
     
     
 # DEVE ESTAR BOM
     def __str__(self):
+        """ String representation of the sequence alignment object.
+        :return: str - formatted string with aligned sequences
+        """
         if self.seq3 == None:
             return self.aligned_seq1 + "\n" + self.aligned_seq2
         else: 

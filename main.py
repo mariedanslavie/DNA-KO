@@ -10,6 +10,10 @@ from sequencedatabase import *
 
 ### Main function
 def main():
+    """Main function to run the Gene LCS application.
+    :return: int - exit code
+    """
+    # ve se o ficheiro de entrada foi fornecido como argumento e se existe
     if len(sys.argv) >= 2 and os.path.exists(sys.argv[1]):
         root = tk.Tk()
         app = GeneLCSApp(root, sys.argv[1])
