@@ -17,8 +17,8 @@ def main():
         app = GeneLCSApp(sys.argv[1])
         app.mainloop()
     else:
-        print("Error: Input file not provided or non existent\nUsage: python .\\projeto_1 data\\<INPUT_FILE_PATH>")
-        return -1
+        app = GeneLCSApp()
+        app.mainloop()
 
 # Redirects to main
 if __name__ == "__main__":

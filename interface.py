@@ -9,7 +9,7 @@ from sequencealignment import SequenceAlignment #alinhar as sequências
 from sequencedatabase import SequenceDataBase #armazenar e manipular as sequências
 
 class GeneLCSApp(tk.Tk): #define a janela principal da aplicação
-    def __init__(self,filename):
+    def __init__(self,filename=""):
         super().__init__()
         self.title("Comparador de Genes LCS")
         self.geometry("1000x800")
@@ -31,6 +31,8 @@ class GeneLCSApp(tk.Tk): #define a janela principal da aplicação
         self.load_initial_sequences() #carrega o ficheiro FASTA inicial
 
     def load_initial_sequences(self): #tenta carregar o ficheiro FASTA passado ao iniciar o programa
+        if self.sequences_file == "":
+            return # Nenhum ficheiro fornecido
         try:
             self.database.load_from_fasta(self.sequences_file)
             self.update_gene_dropdowns()
@@ -105,6 +107,7 @@ class GeneLCSApp(tk.Tk): #define a janela principal da aplicação
 
         filepath = filedialog.askopenfilename(
             title="Selecionar ficheiro FASTA",
+            initialdir=".\\data",  # Pasta inicial
             filetypes=[("FASTA files", ".fasta *.fa *.fna"), ("All files", ".*")]
         )
         if not filepath:
@@ -207,17 +210,13 @@ class GeneLCSApp(tk.Tk): #define a janela principal da aplicação
         btn_frame = tk.Frame(frame, bg="#FFC0CB")
         btn_frame.pack(pady=15)
 
-        btn_color_map = tk.Button(btn_frame, text="Ver Gráfico de Cores", font=self.font_button, bg="#FF69B4", fg="white",
+        btn_color_map = tk.Button(btn_frame, text="Ver Gráfico de Cores das Sequências Alinhadas", font=self.font_button, bg="#FF69B4", fg="white",
                                   command=self.show_color_map)
         btn_color_map.pack(side=tk.LEFT, padx=10)
 
         btn_lcs_length = tk.Button(btn_frame, text="Ver Gráfico do Comprimento da LCS", font=self.font_button, bg="#FF69B4", fg="white",
                                    command=self.show_lcs_length_chart)
         btn_lcs_length.pack(side=tk.LEFT, padx=10)
-
-        btn_aligned_seq = tk.Button(btn_frame, text="Ver Sequências Alinhadas", font=self.font_button, bg="#FF69B4", fg="white",
-                                    command=self.show_aligned_sequences)
-        btn_aligned_seq.pack(side=tk.LEFT, padx=10)
 
         self.display_frame = tk.Frame(frame, bg="#FFC0CB")
         self.display_frame.pack(fill=tk.BOTH, expand=True)
@@ -340,52 +339,6 @@ class GeneLCSApp(tk.Tk): #define a janela principal da aplicação
         canvas = FigureCanvasTkAgg(fig, master=self.display_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-
-
-
-    def show_aligned_sequences(self): #mostra as sequências alinhadas dentro de caixas
-        for widget in self.display_frame.winfo_children():
-            widget.destroy()
-
-        #frame container com altura fixa e scroll vertical
-        container_height = 400 
-        container = tk.Frame(self.display_frame, bg="#FFC0CB", height=container_height)
-        container.pack(fill="both", expand=False)
-
-        canvas = tk.Canvas(container, bg="#FFC0CB", height=container_height)
-        scrollbar_y = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=scrollbar_y.set)
-
-        scrollbar_y.pack(side="right", fill="y")
-        canvas.pack(side="left", fill="both", expand=True)
-
-        scrollable_frame = tk.Frame(canvas, bg="#FFC0CB")
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-
-        def on_frame_configure(event):
-            canvas.configure(scrollregion=canvas.bbox("all"))
-
-        scrollable_frame.bind("<Configure>", on_frame_configure)
-
-        aligned_seqs = [self.sequence_alignment_obj.aligned_seq1,
-                        self.sequence_alignment_obj.aligned_seq2]
-        if self.sequence_alignment_obj.seq3:
-            aligned_seqs.append(self.sequence_alignment_obj.aligned_seq3)
-
-        for i, seq in enumerate(aligned_seqs):
-            box = tk.LabelFrame(scrollable_frame, text=f"Sequência alinhada {i+1}",
-                                font=self.font_label, bg="#FFC0CB", fg="black", labelanchor="n")
-            box.pack(fill=tk.X, padx=10, pady=10)
-
-            text = tk.Text(box, height=5, font=("Courier New", 14), wrap=tk.NONE, bg="white")
-            text.pack(fill="both", expand=True, padx=5, pady=5)
-            text.insert(tk.END, seq)
-            text.config(state=tk.DISABLED)
-
-        back_btn = tk.Button(self.display_frame, text="Voltar ao Menu Inicial",
-                     font=self.font_button, bg="#FF69B4", fg="white",
-                     command=self.init_main_screen)
-        back_btn.pack(pady=10, padx=10) 
 
 
 if __name__ == "__main__": #inicializa a aplicação carregando o ficheiro 
