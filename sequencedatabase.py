@@ -22,7 +22,7 @@ class SequenceDataBase:
         # funcao filter recebe uma funcao lambda que verifica se o id do objeto sequence é igual ao id dado
         seq = next(filter(lambda s: s.id == id, self.sequences), None)
         if seq is None:
-            print("No sequence found with id: {0}".format(id))
+            print("Error: No sequence found with id: {0}".format(id))
         return seq
 
 
@@ -30,7 +30,6 @@ class SequenceDataBase:
         """For each line in file, create a sequence object with the sequence in the line
         :param filename: str - path to input file with all sequences
         """
-        # :return: list of sequence objects
 
         self.sequences = []
         i = 0

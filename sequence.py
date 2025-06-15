@@ -29,5 +29,5 @@ class Sequence:
         if position <= len(self.seq)-1 and position >= -len(self.seq):
             return self.seq[position]
         else:
-            print("Given position ({0}) exceeded sequence length ({1})".format(position, len(self.seq)))
+            print("Error: Given position ({0}) exceeded sequence length ({1})".format(position, len(self.seq)))
             return None

@@ -1,5 +1,4 @@
 from sequencealignment import *
-import pprint
 
 class LCSFinder:
     def __init__(self, seq1, seq2, seq3 = None):
@@ -248,7 +247,6 @@ class LCSFinder:
         #### Se existirem duas ou três sequências, então podemos calcular o LCS
         elif seqs_num == 2:
             self.lcs_seq = self.compute_lcs_2()
-            print("LCS sequence: ", self.lcs_seq)
 
             aligned_seq1, aligned_seq2 = self.needleman_wunsch_2(self.seq1, self.seq2)
             self.flag = True
@@ -271,7 +269,7 @@ class LCSFinder:
         :return: int - length of the LCS, or -1 if LCS has not been computed yet
         """
         if self.flag == False:
-            print("LCS not computed yet, therefore no length available.")
+            print("Error: LCS not computed yet, therefore no length available.")
             return -1
         else:
             return len(self.lcs_seq)
