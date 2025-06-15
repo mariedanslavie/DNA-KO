@@ -48,8 +48,6 @@ class SequenceAlignment:
         x = lambda p, a: round((p / a) * 100) if a > 0 else 0
         return x (count, self.score)
     
-    
-# DEVE ESTAR BOM
     def __str__(self):
         """ String representation of the sequence alignment object.
         :return: str - formatted string with aligned sequences

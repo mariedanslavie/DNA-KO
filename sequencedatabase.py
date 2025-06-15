@@ -1,6 +1,5 @@
 from sequence import *
 
-
 class SequenceDataBase:
     sequences = []
 
@@ -30,7 +29,6 @@ class SequenceDataBase:
         """For each line in file, create a sequence object with the sequence in the line
         :param filename: str - path to input file with all sequences
         """
-
         self.sequences = []
         i = 0
         description = ""

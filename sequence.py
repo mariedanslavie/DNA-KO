@@ -10,9 +10,8 @@ class Sequence:
 
     def __str__(self):
         """ String representation of the sequence object.
-        :return: str - formatted string with sequence id, description and sequence
+        :return: str - sequence in string format
         """
-###### esta not sure if good
         return self.seq
     
     def length(self):

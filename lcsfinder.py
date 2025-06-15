@@ -1,4 +1,4 @@
-from sequencealignment import *
+from sequencealignment import SequenceAlignment
 
 class LCSFinder:
     def __init__(self, seq1, seq2, seq3 = None):
@@ -18,9 +18,10 @@ class LCSFinder:
     #---------->    NEEDLEMAN WUNSCH 2
     def needleman_wunsch_2(self, seqa, seqb):
         """ Implements the Needleman-Wunsch algorithm to align 2 sequences.
-        :param seqa: list - sequence object 1
-        :param seqb: list - sequence object 2
-        :return: tuple - aligned sequences (aligned_seqa, aligned_seqb)
+        :param seqa: list - Sequence object 1
+        :param seqb: list - Sequence object 2
+        :return aligned_seqa: str - aligned sequence 1
+        :return aligned_seqb: str - aligned sequence 2
         """
         n = seqa.length()
         m = seqb.length()
@@ -74,7 +75,8 @@ class LCSFinder:
         :param j: int - current column index in the score matrix
         :param aligned_seqa: str - aligned sequence 1 (to be built)
         :param aligned_seqb: str - aligned sequence 2 (to be built)
-        :return: tuple - aligned sequences (aligned_seqa, aligned_seqb)
+        :return aligned_seqa: str - aligned sequence 1
+        :return aligned_seqb: str - aligned sequence 2
         """
         # Se i ou j forem <= 0, entao chegamos ao fim da matriz, e retornamos as sequencias alinhadas invertidas (comecamos no fim)
         if i <= 0 or j <= 0:
@@ -105,7 +107,9 @@ class LCSFinder:
         :param seqa: list - sequence object 1
         :param seqb: list - sequence object 2
         :param seqc: list - sequence object 3
-        :return: tuple - aligned sequences (aligned_seqa, aligned_seqb, aligned_seqc)
+        :return aligned_seqa: str - aligned sequence 1
+        :return aligned_seqb: str - aligned sequence 2
+        :return aligned_seqc: str - aligned sequence 3
         """
         n, m, p = seqa.length(), seqb.length(), seqc.length()
         match_score = 10
@@ -180,7 +184,9 @@ class LCSFinder:
         :param aligned_a: str - aligned sequence 1 (to be built)
         :param aligned_b: str - aligned sequence 2 (to be built)
         :param aligned_c: str - aligned sequence 3 (to be built)
-        :return: tuple - aligned sequences (aligned_seqa, aligned_seqb)
+        :return aligned_seqa: str - aligned sequence 1
+        :return aligned_seqb: str - aligned sequence 2
+        :return aligned_seqc: str - aligned sequence 3
         """
 ##### aligned_a, aligned_b, aligned_c vs aligned_seqa, aligned_seqb, aligned_seqc
         if i <= 0 and j <= 0 and k <= 0:
@@ -235,7 +241,7 @@ class LCSFinder:
 
     def compute_lcs(self):
         """ Computes the Longest Common Subsequence (LCS) for the provided sequences.
-        :return: SequenceAlignment object containing the aligned sequences and LCS length
+        :return: SequenceAlignment - object containing the aligned sequences and LCS length
         """
         seqs_num = len(self.sequences)
         
